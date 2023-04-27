@@ -6,14 +6,17 @@ import { addTodo } from "../../../redux/modules/todos.js";
 
 const Form = () => {
   const id = nextId();
-  
-  const [todo, setTodo] = useState({
-    id: 0,
+  const dispatch = useDispatch();
+
+  const initialTodo = {
+    id,
     title: "",
     body: "",
     isDone: false,
-  });
-  
+  };
+
+  const [todo, setTodo] = useState(initialTodo);
+
   const onChangeHandler = (event) => {
     const { name, value } = event.target;
     setTodo({ ...todo, [name]: value });
@@ -22,13 +25,8 @@ const Form = () => {
   const onSubmitHandler = (event) => {
     event.preventDefault();
     if (todo.title.trim() === "" || todo.body.trim() === "") return;
-    
-    setTodo({
-      id: 0,
-      title: "",
-      body: "",
-      isDone: false,
-    });
+    dispatch(addTodo(todo));
+    setTodo(initialTodo);
   };
 
   return (
